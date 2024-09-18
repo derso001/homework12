@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "homework11"
+name = "homework12"
 version = "0.1.0"
 description = ""
 package-mode = false
@@ -14,6 +14,10 @@ sqlalchemy = "^2.0.34"
 psycopg2 = "^2.9.9"
 pydantic = {extras = ["email"], version = "^2.9.1"}
 requests = "^2.32.3"
+libgravatar = "^1.0.4"
+python-jose = {extras = ["cryptography"], version = "^3.3.0"}
+passlib = {extras = ["bcrypt"], version = "^1.7.4"}
+python-multipart = "^0.0.9"
 
 
 [build-system]
