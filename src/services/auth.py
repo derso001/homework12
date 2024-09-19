@@ -1,3 +1,4 @@
+import os
 from typing import Optional
 
 from jose import JWTError, jwt
@@ -13,8 +14,8 @@ from src.repository import users as repository_users
 
 class Auth:
     pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-    SECRET_KEY = "secret_key"
-    ALGORITHM = "HS256"
+    SECRET_KEY = os.getenv('SECRET_KEY')
+    ALGORITHM = os.getenv('JWT_ALGORITHM')
     oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/login")
 
     def verify_password(self, plain_password, hashed_password):
@@ -25,6 +26,8 @@ class Auth:
 
     # define a function to generate a new access token
     async def create_access_token(self, data: dict, expires_delta: Optional[float] = None):
+        if not expires_delta:
+            expires_delta = int(os.getenv('ACCESS_TOKEN_EXPIRE_MINUTES')) * 60
         to_encode = data.copy()
         if expires_delta:
             expire = datetime.utcnow() + timedelta(seconds=expires_delta)
@@ -36,6 +39,8 @@ class Auth:
 
     # define a function to generate a new refresh token
     async def create_refresh_token(self, data: dict, expires_delta: Optional[float] = None):
+        if not expires_delta:
+            expires_delta = int(os.getenv('REFRESH_TOKEN_EXPIRE_DAYS')) * 86400
         to_encode = data.copy()
         if expires_delta:
             expire = datetime.utcnow() + timedelta(seconds=expires_delta)
